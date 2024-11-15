@@ -1,66 +1,53 @@
 import {View, Text, SafeAreaView} from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
+import DashboardPage from '../features/dashboard/DashboardPage';
+import TransactionListPage from '../features/transaction/TransactionListPage';
+import TransactionDetailPage from '../features/transaction/TransactionDetailPage';
+import { useTrxMethod } from "../shared/provider/TransactionProvider";
 
-const Stack = createNativeStackNavigator();
+// enum RouteName {
+//   dashboard = 'Dashboard',
+//   transactionList = 'Transaction List',
+//   transactionDetail = 'Transacation Detail',
+// }
 
-enum RouteName {
-  dashboard = 'Dashboard',
-  transactionList = 'Transaction List',
-  transactionDetail = 'Transacation Detail',
-}
+export type RootStackParamList = {
+  Dashboard: undefined;
+  'Transaction List': undefined;
+  'Transacation Detail': undefined;
+};
 
-const RootStack = () => {
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+
+const RootStackWrapper = memo(() => {
+  const {fetchTransactions} = useTrxMethod();
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={RouteName.dashboard}
+      <RootStack.Navigator
+        initialRouteName={'Dashboard'}
         screenOptions={{
           headerStyle: {backgroundColor: 'salmon'},
         }}>
-        <Stack.Screen
-          name={RouteName.dashboard}
-          component={Dashboard}
+        <RootStack.Screen
+          name="Dashboard"
+          component={DashboardPage}
           options={{title: 'Home'}}
         />
-        <Stack.Screen
-          name={RouteName.transactionList}
+        <RootStack.Screen
+          name="Transaction List"
           component={TransactionListPage}
           // options={{headerShown: false}}
         />
-        <Stack.Screen
-          name={RouteName.transactionDetail}
+        <RootStack.Screen
+          name="Transacation Detail"
           component={TransactionDetailPage}
           // options={{headerShown: false}}
         />
-      </Stack.Navigator>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
-};
+});
 
-const Dashboard = () => {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Dashboard Page</Text>
-    </View>
-  );
-};
-
-const TransactionListPage = () => {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Transaction List Page</Text>
-    </View>
-  );
-};
-
-const TransactionDetailPage = () => {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Transaction Detail Page</Text>
-    </View>
-  );
-};
-
-export default RootStack;
+export default RootStackWrapper;
