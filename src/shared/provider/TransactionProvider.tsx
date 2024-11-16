@@ -36,6 +36,7 @@ interface TrxState {
 interface TrxMethod {
   fetchTransactions: () => Promise<boolean>;
   testFunction: () => void;
+  onSearchTrx: (key: String) => void;
 }
 
 const initialContextState: TrxState = {
@@ -47,6 +48,7 @@ const initialContextState: TrxState = {
 const initialContextMethod: TrxMethod = {
   fetchTransactions: () => Promise.resolve(false),
   testFunction: () => {},
+  onSearchTrx: () => {},
 };
 
 const trxStateContext = createContext<TrxState>(initialContextState);
@@ -122,6 +124,9 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
       },
       testFunction: () => {
         console.log('test function');
+      },
+      onSearchTrx: (key: String) => {
+        console.log(`key: ${key}`);
       },
     }),
     [dispatch, state],

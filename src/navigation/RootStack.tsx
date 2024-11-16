@@ -6,6 +6,8 @@ import DashboardPage from '../features/dashboard/DashboardPage';
 import TransactionListPage from '../features/transaction/TransactionListPage';
 import TransactionDetailPage from '../features/transaction/TransactionDetailPage';
 import {useTrxMethod} from '../shared/provider/TransactionProvider';
+import AppColors from "../shared/constants/AppColors";
+
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -36,7 +38,12 @@ const RootStackWrapper = memo(() => {
         <RootStack.Screen
           name="Transaction List"
           component={TransactionListPage}
-          // options={{headerShown: false}}
+          options={{
+            headerStyle: {
+              backgroundColor: AppColors.white,
+            },
+            headerShadowVisible: false,
+          }}
         />
         <RootStack.Screen
           name="Transacation Detail"
