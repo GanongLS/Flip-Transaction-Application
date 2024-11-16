@@ -16,12 +16,10 @@ export type RootStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStackWrapper = memo(() => {
-  const {fetchTransactions, testFunction} = useTrxMethod();
+  const {fetchTransactions} = useTrxMethod();
 
   useEffect(() => {
-    // console.log(`fetch:${fetchTransactions.toString()}`);
     fetchTransactions();
-    // testFunction();
   }, []);
   return (
     <NavigationContainer>

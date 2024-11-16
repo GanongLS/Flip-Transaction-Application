@@ -12,6 +12,7 @@ import {fetchError} from '../helpers/fetchError';
 import {Convert, Transaction, Transactions} from '../model/Transaction';
 
 enum ActionKind {
+  Entry = 'entry',
   Fetch = 'fetch',
   Search = 'search',
   Reset = 'reset',
@@ -29,9 +30,7 @@ interface TrxAction {
 interface TrxState {
   isFetching: boolean;
   isSearching: boolean;
-  totalItems: Number;
-  totalPrice: String;
-  cart: Array<Number>;
+  transactions: Transaction[];
 }
 
 interface TrxMethod {
@@ -42,9 +41,7 @@ interface TrxMethod {
 const initialContextState: TrxState = {
   isFetching: true,
   isSearching: false,
-  totalItems: 0,
-  totalPrice: '',
-  cart: [],
+  transactions: [],
 };
 
 const initialContextMethod: TrxMethod = {
@@ -60,6 +57,11 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
 
   const reducer = (state: TrxState, action: TrxAction) => {
     switch (action.type) {
+      case ActionKind.Entry:
+        return {
+          ...state,
+          transactions: action.payload.transactions,
+        };
       case ActionKind.Fetch:
         return {
           ...state,
@@ -99,9 +101,18 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
               keyA.localeCompare(keyB),
             ),
           );
-          console.log(transactions);
-          console.log(sortedTransactions);
-          console.log(Object.values(transactions)[0]);
+          var trxList = Object.keys(sortedTransactions).map(
+            key => sortedTransactions[key],
+          );
+          // console.log(transactions);
+          // console.log(sortedTransactions);
+          console.log(trxList);
+          // console.log(Object.values(transactions)[0]);
+          dispatch({
+            type: ActionKind.Entry,
+            payload: {...state, transactions: trxList},
+          });
+
           return true;
         } catch (err) {
           const Err = fetchError(err, 'Provider');
