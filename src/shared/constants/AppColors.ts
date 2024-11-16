@@ -17,11 +17,11 @@ const AppColors = {
   sky: '#c6e4f5',
 
   //dika
-  orange: '#FF8000',
+  orange: '#f26641',
   orange2: '#FEA33D',
-  grayFA: '#fafafa',
+  grayF4: '#f4f4f4',
   grayEE: '#eeeeee',
-  grayDD: "#dddddd",
+  grayDD: '#dddddd',
   grayBD: '#bdbdbd',
   gray9E: '#9e9e9e',
   gray82: '#828282',

@@ -10,7 +10,7 @@ const TransactionListPage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flexGrow: 0.1}}>
+      <View style={{flexGrow: 0.15}}>
         <TransactionSearchBar />
       </View>
       <ScrollView
@@ -28,7 +28,7 @@ const TransactionListPage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.grayF4,
     flexGrow: 1,
   },
   scrollContent: {

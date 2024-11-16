@@ -5,14 +5,14 @@ import {
   GestureResponderEvent,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
+  Text,
   View,
 } from 'react-native';
 
 import {Icon} from '@rneui/base';
 import {normalize} from '@rneui/themed';
 import {useTrxMethod} from '../../../shared/provider/TransactionProvider';
-import AppColors from "../../../shared/constants/AppColors";
+import AppColors from '../../../shared/constants/AppColors';
 
 export interface SearchBarProps {
   onIconPress?: (event: GestureResponderEvent) => void;
@@ -34,31 +34,44 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
       <View style={{...styles.rowSBContainer, ...styles.rounded}}>
         <Icon
           type="ionicon"
-          name="search"
-          size={normalize(20)}
-          color={AppColors.white}
+          name="search-outline"
+          size={28}
+          color={AppColors.gray82}
           onPress={onIconPress}
           style={{padding: 8}}
         />
         <TextInput
-          placeholder="Cari movie..."
-          placeholderTextColor="white"
-          style={{fontSize: normalize(18), color: 'white', flex: 1}}
+          placeholder="Cari nama, bank, atau nominal"
+          placeholderTextColor={AppColors.gray82}
+          style={{
+            fontSize: 14,
+            color: AppColors.gray66,
+            flex: 1,
+            marginVertical: 16,
+          }}
           onChangeText={t => setText(t)}
           value={text}
           onSubmitEditing={onSearch}
         />
-        {text ? (
-          <View style={{flex: 0.15}}>
-            <Icon
-              type="ionicon"
-              name="close-circle"
-              size={normalize(22)}
-              color={AppColors.white}
-              onPress={() => setText('')}
-            />
-          </View>
-        ) : null}
+
+        <View style={{...styles.rowEndContainer, flexGrow: 0.1}}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: AppColors.orange,
+              fontWeight: 700,
+              marginVertical: 16,
+            }}>
+            URUTKAN
+          </Text>
+          <Icon
+            type="ionicon"
+            name="chevron-down-outline"
+            size={28}
+            color={AppColors.orange}
+            onPress={() => setText('')}
+          />
+        </View>
       </View>
     </View>
   );
@@ -72,8 +85,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  rowEndContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   rounded: {
-    backgroundColor: AppColors.gray66,
-    borderRadius: 12,
+    backgroundColor: AppColors.white,
+    borderRadius: 4,
   },
 });
