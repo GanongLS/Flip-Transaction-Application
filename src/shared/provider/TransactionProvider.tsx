@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import {baseURL, defaultTimeout} from '../env/API';
 import {fetchError} from '../helpers/fetchError';
+import {Convert, Transaction, Transactions} from '../model/Transaction';
 
 enum ActionKind {
   Fetch = 'fetch',
@@ -92,7 +93,15 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
           const result = await axios.get(`${baseURL}`, {
             timeout: defaultTimeout,
           });
-          console.log(result.data);
+          let transactions: Transactions = result.data;
+          let sortedTransactions: Transactions = Object.fromEntries(
+            Object.entries(transactions).sort(([keyA], [keyB]) =>
+              keyA.localeCompare(keyB),
+            ),
+          );
+          console.log(transactions);
+          console.log(sortedTransactions);
+          console.log(Object.values(transactions)[0]);
           return true;
         } catch (err) {
           const Err = fetchError(err, 'Provider');
