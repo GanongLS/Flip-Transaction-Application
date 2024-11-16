@@ -11,6 +11,7 @@ import {StyleSheet, Text, useColorScheme, View} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import RootStack from './src/navigation/RootStack';
+import TransactionProvider from './src/shared/provider/TransactionProvider';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -51,9 +52,9 @@ function App(): React.JSX.Element {
 
   return (
     // Provider
-    // Navigation Root
-
-    <RootStack />
+    <TransactionProvider>
+      <RootStack />
+    </TransactionProvider>
   );
 }
 

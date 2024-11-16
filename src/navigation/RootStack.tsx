@@ -1,17 +1,11 @@
 import {View, Text, SafeAreaView} from 'react-native';
-import React, { memo } from 'react';
+import React, {memo, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import DashboardPage from '../features/dashboard/DashboardPage';
 import TransactionListPage from '../features/transaction/TransactionListPage';
 import TransactionDetailPage from '../features/transaction/TransactionDetailPage';
-import { useTrxMethod } from "../shared/provider/TransactionProvider";
-
-// enum RouteName {
-//   dashboard = 'Dashboard',
-//   transactionList = 'Transaction List',
-//   transactionDetail = 'Transacation Detail',
-// }
+import {useTrxMethod} from '../shared/provider/TransactionProvider';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -22,7 +16,13 @@ export type RootStackParamList = {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStackWrapper = memo(() => {
-  const {fetchTransactions} = useTrxMethod();
+  const {fetchTransactions, testFunction} = useTrxMethod();
+
+  useEffect(() => {
+    // console.log(`fetch:${fetchTransactions.toString()}`);
+    fetchTransactions();
+    // testFunction();
+  }, []);
   return (
     <NavigationContainer>
       <RootStack.Navigator

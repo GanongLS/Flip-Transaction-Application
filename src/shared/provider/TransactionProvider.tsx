@@ -8,7 +8,7 @@ import React, {
   useReducer,
 } from 'react';
 import {baseURL, defaultTimeout} from '../env/API';
-import {fetchError} from '../Helpers/fetchError';
+import {fetchError} from '../helpers/fetchError';
 
 enum ActionKind {
   Fetch = 'fetch',
@@ -35,6 +35,7 @@ interface TrxState {
 
 interface TrxMethod {
   fetchTransactions: () => Promise<boolean>;
+  testFunction: () => void;
 }
 
 const initialContextState: TrxState = {
@@ -47,10 +48,8 @@ const initialContextState: TrxState = {
 
 const initialContextMethod: TrxMethod = {
   fetchTransactions: () => Promise.resolve(false),
+  testFunction: () => {},
 };
-
-// export type UseTrxStateType = ReturnType<TrxState>;
-// export type UseTrxMethodType = ReturnType<typeof useTrxMethod>;
 
 const trxStateContext = createContext<TrxState>(initialContextState);
 const trxMethodContext = createContext<TrxMethod>(initialContextMethod);
@@ -90,16 +89,19 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
     () => ({
       fetchTransactions: async (): Promise<boolean> => {
         try {
-          const request = await axios.get(`${baseURL}`, {
+          const result = await axios.get(`${baseURL}`, {
             timeout: defaultTimeout,
           });
-          console.log({request});
+          console.log(result.data);
           return true;
         } catch (err) {
-          const Err = fetchError(err, 'authDevice');
+          const Err = fetchError(err, 'Provider');
           console.log({Err});
           return false;
         }
+      },
+      testFunction: () => {
+        console.log('test function');
       },
     }),
     [dispatch, state],
@@ -117,14 +119,14 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
 export const useTrxState = (): TrxState => {
   const context = useContext(trxStateContext);
   if (context === undefined) {
-    throw new Error('useTrxState Error');
+    throw new Error('useTrxState Error is not Initialized');
   }
   return context;
 };
 export const useTrxMethod = (): TrxMethod => {
   const context = useContext(trxMethodContext);
-  if (context === undefined) {
-    throw new Error('useTrxMethod Error');
+  if (context === undefined || context == initialContextMethod) {
+    throw new Error('useTrxMethod Error is not Initialized');
   }
   return context;
 };
