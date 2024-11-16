@@ -6,7 +6,7 @@ const AppColors = {
   hightlight: '#FFDA89',
   gradient_end: '#ffa64d', // luki
   primaryDark: '#000000',
-  green: '#6DD230',
+  green: '#4fb787',
   dark: '#050505',
   black: '#000000',
   purple: '#5D10F6',
