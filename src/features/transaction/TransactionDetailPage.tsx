@@ -1,6 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-
+import {View, Text} from 'react-native';
+import React from 'react';
 
 const TransactionDetailPage = () => {
   return (
@@ -10,4 +9,4 @@ const TransactionDetailPage = () => {
   );
 };
 
-export default TransactionDetailPage
+export default TransactionDetailPage;

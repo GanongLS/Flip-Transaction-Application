@@ -1,27 +1,37 @@
-import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import {useTrxState} from '../../shared/provider/TransactionProvider';
 
 import TransactionSearchBar from './components/TransactionSearchBar.tsx';
 import AppColors from '../../shared/constants/AppColors.ts';
+import {height} from '../../shared/constants/AppConstants.ts';
+import TransactionCard from './components/TransactionCard.tsx';
 
 const TransactionListPage = () => {
   const {transactions} = useTrxState();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flexGrow: 0.15}}>
+      <View style={{height: height * 0.1}}>
         <TransactionSearchBar />
       </View>
-      <ScrollView
+
+      <FlatList
+        style={{flexGrow: 0.9}}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}>
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          {transactions.map((el, id) => {
-            return <Text key={el.account_number}> {el.id}</Text>;
-          })}
-        </View>
-      </ScrollView>
+        data={transactions}
+        renderItem={({item}) => <TransactionCard item={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </SafeAreaView>
   );
 };
@@ -34,13 +44,11 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 0.9,
   },
-  title: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
-  subtitle: {
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+  card: {
+    margin: 8,
+    backgroundColor: AppColors.white,
+    borderRadius: 8,
+    overflow: 'hidden',
   },
 });
 
