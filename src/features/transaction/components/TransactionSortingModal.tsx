@@ -25,8 +25,7 @@ export interface TrxSortingProps {
 const TransactionSortingModal = (props: TrxSortingProps) => {
   let {isVisible, onClose} = props;
   let {sortValues, activeSort} = useTrxState();
-  let { onSortTrx } = useTrxMethod();
-  console.log(activeSort)
+  let {onSortTrx} = useTrxMethod();
 
   return (
     <View>
@@ -50,9 +49,10 @@ const TransactionSortingModal = (props: TrxSortingProps) => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              {sortValues.map(el => {
+              {sortValues.map((el, id) => {
                 return (
                   <RadioButton
+                    key={id}
                     isActive={el == activeSort}
                     title={el}
                     onPress={() => {

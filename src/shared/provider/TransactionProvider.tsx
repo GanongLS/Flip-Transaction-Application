@@ -127,7 +127,6 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
     () => ({
       initSortArray: () => {
         let array = Object.values(SortKind);
-        console.log(array);
         dispatch({
           type: ActionKind.initSort,
           payload: {...state, sortValues: array},
@@ -156,13 +155,11 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
           return true;
         } catch (err) {
           const Err = fetchError(err, 'Provider');
-          console.log({Err});
+
           return false;
         }
       },
-      testFunction: () => {
-        console.log('test function');
-      },
+      testFunction: () => {},
       onSearchTrx: (key: string) => {
         key = key.toLowerCase();
         let filteredTrx = state.apiTransactions.filter(el => {

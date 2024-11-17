@@ -15,6 +15,7 @@ import {
   useTrxMethod,
   useTrxState,
 } from '../../../shared/provider/TransactionProvider';
+import {width} from '../../../shared/constants/AppConstants';
 
 export interface SearchBarProps {
   onSorting: () => void;
@@ -40,7 +41,7 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
           onPress={() => {
             onSearch();
           }}
-          style={{padding: 8}}
+          style={{margin: 8}}
         />
         <TextInput
           placeholder="Cari nama, bank, atau nominal"
@@ -48,8 +49,8 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
           style={{
             fontSize: 14,
             color: AppColors.gray66,
-            flex: 1,
-            marginVertical: 16,
+            marginVertical: 8,
+            maxWidth: width * 0.7,
           }}
           onChangeText={t => setText(t)}
           value={text}
@@ -57,7 +58,12 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
         />
 
         <Pressable
-          style={{...styles.rowEndContainer, flexGrow: 0.1}}
+          style={{
+            ...styles.rowEndContainer,
+            flexGrow: 0.1,
+            minWidth: width * 0.3,
+            marginRight: 8,
+          }}
           onPress={() => {
             onSorting();
           }}>

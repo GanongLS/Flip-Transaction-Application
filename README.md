@@ -1,4 +1,4 @@
-# Movie-App
+# Transaction List App
 
 This App being developed by Luki Subandi. I intend to license this App under MIT License.
 
