@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/core';
 import React, {memo, useEffect, useState} from 'react';
 import {
   GestureResponderEvent,
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -9,21 +10,25 @@ import {
 } from 'react-native';
 import {Icon} from '@rneui/base';
 import AppColors from '../../../shared/constants/AppColors';
-import {useTrxMethod} from '../../../shared/provider/TransactionProvider';
+import {
+  SortKind,
+  useTrxMethod,
+  useTrxState,
+} from '../../../shared/provider/TransactionProvider';
 
 export interface SearchBarProps {
-  onIconPress?: (event: GestureResponderEvent) => void;
+  onSorting: () => void;
 }
 
 const TransactionSearchBar = memo((props: SearchBarProps) => {
-
-  const {onIconPress} = props;
-  const {onSearchTrx} = useTrxMethod();
+  const {onSorting} = props;
+  const {onSearchTrx, onSortTrx} = useTrxMethod();
+  const {activeSort} = useTrxState();
   const [text, setText] = useState('');
   const onSearch = () => {
-    const search = onSearchTrx(text);
+    onSearchTrx(text);
   };
-  
+
   return (
     <View style={{padding: 8, flex: 1}}>
       <View style={{...styles.rowSBContainer, ...styles.rounded}}>
@@ -32,7 +37,9 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
           name="search-outline"
           size={28}
           color={AppColors.gray82}
-          onPress={onIconPress}
+          onPress={() => {
+            onSearch();
+          }}
           style={{padding: 8}}
         />
         <TextInput
@@ -49,7 +56,11 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
           onSubmitEditing={onSearch}
         />
 
-        <View style={{...styles.rowEndContainer, flexGrow: 0.1}}>
+        <Pressable
+          style={{...styles.rowEndContainer, flexGrow: 0.1}}
+          onPress={() => {
+            onSorting();
+          }}>
           <Text
             style={{
               fontSize: 14,
@@ -57,16 +68,18 @@ const TransactionSearchBar = memo((props: SearchBarProps) => {
               fontWeight: 700,
               marginVertical: 16,
             }}>
-            URUTKAN
+            {activeSort}
           </Text>
           <Icon
             type="ionicon"
             name="chevron-down-outline"
             size={28}
             color={AppColors.orange}
-            onPress={() => setText('')}
+            onPress={() => {
+              onSorting();
+            }}
           />
-        </View>
+        </Pressable>
       </View>
     </View>
   );

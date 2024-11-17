@@ -5,6 +5,7 @@ import AppColors from '../../../shared/constants/AppColors';
 import {toTitleCase} from '../../../shared/helpers/StringConverter';
 import {Status, Transaction} from '../../../shared/model/Transaction';
 import {appStyles} from '../../../shared/styles/AppStyles';
+import {nominalFormatter} from '../../../shared/helpers/NominalFormatter';
 
 export interface TrxCardProps {
   item: Transaction;
@@ -15,7 +16,7 @@ const TransactionCard = (props: TrxCardProps) => {
   let {status} = item;
   let isSuccess = status == Status.Success ? true : false;
 
-  const date = new Date(item.completed_at);
+  const date = new Date(item.created_at);
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -107,7 +108,7 @@ const TransactionCard = (props: TrxCardProps) => {
                   fontSize: 14,
                   color: AppColors.black,
                 }}>
-                {item.amount ?? ''}
+                {item.amount ? nominalFormatter(item.amount) : ''}
               </Text>
 
               <Icon

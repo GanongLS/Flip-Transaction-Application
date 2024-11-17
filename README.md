@@ -1,79 +1,91 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Movie-App
 
-# Getting Started
+This App being developed by Luki Subandi. I intend to license this App under MIT License.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Fork or clone this repository to your personal repository.
 
-## Step 1: Start the Metro Server
+## How to run the App:
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+1. Setup React Native Environment in your personal PC based on this guide: https://reactnative.dev/docs/environment-setup.
+2. Open your remote personal repository that held the codebase for this up.
+3. In the root folder run this int your terminal/command cli:
+   1. Run `npm install` or `yarn`.
+   2. Then run `react-native start` or `yarn start`.
+   3. Then run `react-native run-android` or `yarn run-android`
 
-To start Metro, run the following command from the _root_ of your React Native project:
+In the Linux based OS you may find npm not running as expected you may need `npx react-native start` then `npx react-native run-android`.
 
-```bash
-# using npm
-npm start
+If you find some error feel free to open issues.
 
-# OR using Yarn
-yarn start
-```
+Happy Hacking.
 
-## Step 2: Start your Application
+-@ganLS-
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+---
 
-### For Android
+## Cara membuat Debug APK
 
-```bash
-# using npm
-npm run android
+copas command berikut di terminal pada folder utama
 
-# OR using Yarn
-yarn android
-```
+`npx react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res`
 
-### For iOS
+atau
 
-```bash
-# using npm
-npm run ios
+`npx react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/build/intermediates/assets/debug/index.android.bundle --assets-dest ./android/app/build/intermediates/res/merged/debug`
 
-# OR using Yarn
-yarn ios
-```
+pada kasus OS linux perlu ada penambahan yarn/npx di depan command, pada OS lain mungkin tidak diperlukan.
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+jika ada kendala karena error Enoent coba buat foldernya dengan
+`mkdir android/app/src/main/assets`
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+setelah selesai
+#Buka file android
+`cd android`
 
-## Step 3: Modifying your App
+jika gagal build karena Execution failed for task ':app:mergeDexDebug' atau semacamnya coba
+baca:
+https://rnfirebase.io/enabling-multidex
 
-Now that you have successfully run the app, let's modify it.
+#Create debug build:
+`./gradlew assembleDebug`
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+#Create release build:
+`./gradlew assembleRelease`
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+apk debug ada pada
+`cd app/build/outputs/apk/debug`
 
-## Congratulations! :tada:
+---
 
-You've successfully run and modified your React Native App. :partying_face:
+Repositori ini dibuat untuk memenuhi test assesment untuk masuk ke dalam team mobile Front End Development PT FLIP Indonesia. 
 
-### Now what?
+Catatan dalam Pengembangan:
+1. Saya menggunakan create_at sebagai acuan tanggal untuk sorting dan tanggal pada transaction card. 
+2. Saya belum sempat membuat debug apk atau ios testflight. 
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
 
-# Troubleshooting
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Jika diberikan waktu lebih dari yang sekarang, dengan keadaan saya yang sekarang yang sedang bekerja di perusahaan lain tidak banyak yang bisa saya kerjakan. Karena saya akan mengutamakan pekerjaan saya. Seluruh repositori ini dibangun selama lima hari dengan saya tetap melakukan presensi (bekerja) di perusahaan saat ini saya bekerja selama tanggal 13-15 November 2024. Saya baru muali full incharge setelah 16 November 2024.
 
-# Learn More
+Namun, Jika ada waktu lebih untuk mengerjakan tugas ini (dengan syarat saya tidak memiliki beban kerja di perusahaan lain), saya bisa melakukan:
 
-To learn more about React Native, take a look at the following resources:
+1. Menambah method-method yang meningkatkan user experience seperti activity indicator saat loading, error report saat fetch tidak berhasil atau error report lainnya, dengan syarat API dari BE juga diperbaharui.
+2. Jika ada waktu 2 pekan lagi, saya bisa mengubah global state manajemen yang disini saya menggunakan react.contex + react.useReducer menjadi react-redux. (ada beberapa alasan saya menggunakan state manajemen pilihan saya, akan saya jelaskan dibawah).
+3. Jika diberikan 2 bulan lagi saya bisa membuat aplikasi mockup (bahkan bisa dengan API), untuk tampilan sederhana mencakup mungkin sampai 5 fitur baru seperti hit transaksi, confirmasi transaksi, modul ppob (3 modul).
+4. Jika diberikan waktu 1 tahun, saya bisa usahakan sudah bisa membuat full feature aplikasi flip (mungkin masih dengan beberapa bug). 
+5. Lebih daru 1 tahun, saya lebih mementingkan apa yang diperlukan customer. 
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Mengapa saya memilih menggunakan React.Context + React.useReducer dibanding react-redux? Alasan paling praktisnya karena saya sudah terbiasa dengan state manajemen ini. Tetapi, ada banyak alasan teknis lain, seperti:
+
+1. react.context +react.useReducer dibuat oleh developer yang membuat redux, sehingga bisa dikatakan API dari react.context + useReducer lebih termaintain dengan baik, lebih mudah digunakan dan lebih sedikit boiler plate dan middleware.
+2. Tidak perlu menginstall package tambahan, semakin sedikit third party package semakin mudah memaintain pekerjaan/ proyek.
+3. Bisa membuat multi store tanpa banyak boilerplate. Saya sudah pernah membuat aplikasi dengan lebih dari 40 react.context.provider. Dan masih berjalan dengan sangat ringan. Kelemahan aplikasi dengan satu global state store adalah adanya banyak middleware, nesting state dan boiler plate.
+4. react.context + react.useProvider langsung di maintain oleh team developer react sehingga kemungkinan terjadi API yang tidak termaintain, conflict major upgrade (atau minor) dan ketidak cocokan lain dari perubahan versi sangat kecil.
+
+Saya sudah pernah menggunakan react-redux dalam karir saya, saya mempelajarinya selama kurang lebih 2 pekan penuh. Saya hanya perlu waktu 3 hari untuk memahami react.context. Dari pandangan subjective saya, jika saya ingin mengerjakan proyek pribadi dengan menggunakan react.js atau react-native saya akan selalu mendahulukan react.context + react.useReducer dibanding react-redux. Akan tetapi, dalam pekerjaan saya akan tetap mengikuti framework yang banyak digunakan oleh team atau framework yang diharuskan oleh perusahaan.
+
+Seperti pengalaman saya sekarang saya bekerja dengan framework Flutter/Dart menggunakan BLoC. Saya awalnya lebih fasih menggunakan Provider, tetapi setelah 1.5 tahun saya menggunakan BLoC bisa dikatakan saya sudah lebih fasih menggunakan BLoC. Begitu juga kemungkinan dengan redux, jika saya menggunakannya sampai 1,5 tahun kemungkinan besar saya akan lebih memahaminya. 
+
+Selain itu, pengembangan dengan menggunakan react-redux tidak jauh berbeda dengan react.useReducer hanya berbeda di tingkat middleware yang digunakan sebagai state distributor, sehingga akan lebih mudah saya menerapkannya.
+
+-Luki Subandi-

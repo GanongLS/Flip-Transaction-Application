@@ -11,7 +11,16 @@ import {baseURL, defaultTimeout} from '../env/API';
 import {fetchError} from '../helpers/fetchError';
 import {Transaction, Transactions} from '../model/Transaction';
 
+export enum SortKind {
+  Default = 'URUTKAN',
+  NameAsc = 'Name A-Z',
+  NameDesc = 'Name Z-A',
+  DateNewest = 'Tanggal Terbaru',
+  DateOldest = 'Tanggal Terlama',
+}
+
 enum ActionKind {
+  initSort = 'initSort',
   Entry = 'entry',
   Fetch = 'fetch',
   Search = 'search',
@@ -33,12 +42,17 @@ interface TrxState {
   isSearching: boolean;
   apiTransactions: Transaction[];
   transactions: Transaction[];
+  sortValues: SortKind[];
+  activeSort: SortKind;
 }
 
+// An interface for our method
 interface TrxMethod {
+  initSortArray: () => void;
   fetchTransactions: () => Promise<boolean>;
   testFunction: () => void;
   onSearchTrx: (key: string) => void;
+  onSortTrx: (key: SortKind) => void;
 }
 
 const initialContextState: TrxState = {
@@ -46,12 +60,16 @@ const initialContextState: TrxState = {
   isSearching: false,
   apiTransactions: [],
   transactions: [],
+  sortValues: [],
+  activeSort: SortKind.Default,
 };
 
 const initialContextMethod: TrxMethod = {
+  initSortArray: () => {},
   fetchTransactions: () => Promise.resolve(false),
   testFunction: () => {},
   onSearchTrx: () => {},
+  onSortTrx: () => {},
 };
 
 const trxStateContext = createContext<TrxState>(initialContextState);
@@ -62,6 +80,11 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
 
   const reducer = (state: TrxState, action: TrxAction) => {
     switch (action.type) {
+      case ActionKind.initSort:
+        return {
+          ...state,
+          sortValues: action.payload.sortValues,
+        };
       case ActionKind.Entry:
         return {
           ...state,
@@ -72,6 +95,12 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
         return {
           ...state,
           transactions: action.payload.transactions,
+        };
+      case ActionKind.Sort:
+        return {
+          ...state,
+          transactions: action.payload.transactions,
+          activeSort: action.payload.activeSort,
         };
       case ActionKind.Fetch:
         return {
@@ -96,6 +125,14 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
 
   const trxMethod = useMemo(
     () => ({
+      initSortArray: () => {
+        let array = Object.values(SortKind);
+        console.log(array);
+        dispatch({
+          type: ActionKind.initSort,
+          payload: {...state, sortValues: array},
+        });
+      },
       fetchTransactions: async (): Promise<boolean> => {
         try {
           const result = await axios.get(`${baseURL}`, {
@@ -127,8 +164,8 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
         console.log('test function');
       },
       onSearchTrx: (key: string) => {
-        console.log(`key: ${ key }`);
-        key = key.toLowerCase()
+        console.log(`key: ${key}`);
+        key = key.toLowerCase();
         let filteredTrx = state.apiTransactions.filter(el => {
           return (
             el.beneficiary_name.toLowerCase().includes(key) ||
@@ -142,8 +179,57 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
           payload: {...state, transactions: filteredTrx},
         });
       },
-      onSortTrx: (key: String) => {
+      onSortTrx: (key: SortKind) => {
         console.log(`key: ${key}`);
+        let sortedTrx: Transaction[] = [];
+        switch (key) {
+          case SortKind.NameAsc:
+            sortedTrx = state.transactions.sort((a, b) =>
+              a.beneficiary_name < b.beneficiary_name
+                ? -1
+                : a.beneficiary_name > b.beneficiary_name
+                ? 1
+                : 0,
+            );
+
+            break;
+
+          case SortKind.NameDesc:
+            sortedTrx = state.transactions.sort((a, b) =>
+              a.beneficiary_name > b.beneficiary_name
+                ? -1
+                : a.beneficiary_name < b.beneficiary_name
+                ? 1
+                : 0,
+            );
+            break;
+
+          case SortKind.DateNewest:
+            sortedTrx = state.transactions.sort(
+              (a, b) =>
+                new Date(a.created_at).getUTCDate() -
+                new Date(b.created_at).getUTCDate(),
+            );
+            break;
+
+          case SortKind.DateOldest:
+            sortedTrx = state.transactions.sort(
+              (a, b) =>
+                new Date(b.created_at).getUTCDate() -
+                new Date(a.created_at).getUTCDate(),
+            );
+            break;
+
+          default:
+            sortedTrx = state.apiTransactions;
+            break;
+        }
+        console.log(`key di provider: ${key}`);
+
+        dispatch({
+          type: ActionKind.Sort,
+          payload: {...state, transactions: sortedTrx, activeSort: key},
+        });
       },
     }),
     [dispatch, state],

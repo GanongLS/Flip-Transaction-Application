@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import AppColors from '../constants/AppColors';
 
 export const appStyles = StyleSheet.create({
   rowSBContainer: {
@@ -18,5 +17,25 @@ export const appStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+});
+
+export const ModalStyles = StyleSheet.create({
+  baseView: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    width: '100%',
+    shadowColor: '#000',
+    shadowOffset: {
+      height: 2,
+      width: 0.5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 5,
   },
 });

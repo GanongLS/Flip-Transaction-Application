@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import {
   useTrxMethod,
@@ -9,24 +9,35 @@ import {height} from '../../shared/constants/AppConstants.ts';
 import TransactionCard from './components/TransactionCard.tsx';
 import TransactionSearchBar from './components/TransactionSearchBar.tsx';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import TransactionSorting from './components/TransactionSortingModal.tsx';
 
 const TransactionListPage = () => {
   const {transactions} = useTrxState();
-  const {onSearchTrx} = useTrxMethod();
+  const {onSearchTrx, initSortArray} = useTrxMethod();
+  const [popUpVisible, setPopUpVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       return () => {
-        // to unsearch when blur focus page. 
+        // to unsearch when blur focus page.
         onSearchTrx('');
       };
     }, []),
   );
 
+  useEffect(() => {
+    initSortArray();
+    // console.log(`pop up visible: ${popUpVisible}`);
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{height: height * 0.1}}>
-        <TransactionSearchBar />
+        <TransactionSearchBar
+          onSorting={() => {
+            setPopUpVisible(true);
+          }}
+        />
       </View>
 
       <FlatList
@@ -35,6 +46,12 @@ const TransactionListPage = () => {
         data={transactions}
         renderItem={({item}) => <TransactionCard item={item} />}
         keyExtractor={(item, index) => index.toString()}
+      />
+      <TransactionSorting
+        isVisible={popUpVisible}
+        onClose={() => {
+          setPopUpVisible(false);
+        }}
       />
     </SafeAreaView>
   );

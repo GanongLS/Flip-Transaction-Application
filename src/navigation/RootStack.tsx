@@ -6,13 +6,12 @@ import DashboardPage from '../features/dashboard/DashboardPage';
 import TransactionListPage from '../features/transaction/TransactionListPage';
 import TransactionDetailPage from '../features/transaction/TransactionDetailPage';
 import {useTrxMethod} from '../shared/provider/TransactionProvider';
-import AppColors from "../shared/constants/AppColors";
-
+import AppColors from '../shared/constants/AppColors';
 
 export type RootStackParamList = {
   Dashboard: undefined;
   'Transaction List': undefined;
-  'Transacation Detail': undefined;
+  'Transaction Detail': undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -26,7 +25,7 @@ const RootStackWrapper = memo(() => {
   return (
     <NavigationContainer>
       <RootStack.Navigator
-        initialRouteName={'Dashboard'}
+        initialRouteName={'Transaction List'}
         screenOptions={{
           headerStyle: {backgroundColor: 'salmon'},
         }}>
@@ -43,10 +42,11 @@ const RootStackWrapper = memo(() => {
               backgroundColor: AppColors.white,
             },
             headerShadowVisible: false,
+            headerShown: false,
           }}
         />
         <RootStack.Screen
-          name="Transacation Detail"
+          name="Transaction Detail"
           component={TransactionDetailPage}
           // options={{headerShown: false}}
         />
