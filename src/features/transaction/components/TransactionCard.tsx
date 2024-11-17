@@ -1,10 +1,10 @@
+import {Icon} from '@rneui/base';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AppColors from '../../../shared/constants/AppColors';
-import {Status, Transaction} from '../../../shared/model/Transaction';
-import {Icon} from '@rneui/base';
-import {appStyles} from '../../../shared/styles/AppStyles';
 import {toTitleCase} from '../../../shared/helpers/StringConverter';
+import {Status, Transaction} from '../../../shared/model/Transaction';
+import {appStyles} from '../../../shared/styles/AppStyles';
 
 export interface TrxCardProps {
   item: Transaction;

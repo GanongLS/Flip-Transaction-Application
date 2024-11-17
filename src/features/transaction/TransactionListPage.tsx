@@ -1,23 +1,27 @@
+import React, {useCallback, useEffect} from 'react';
+import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
-import {useTrxState} from '../../shared/provider/TransactionProvider';
-
-import TransactionSearchBar from './components/TransactionSearchBar.tsx';
+  useTrxMethod,
+  useTrxState,
+} from '../../shared/provider/TransactionProvider';
 import AppColors from '../../shared/constants/AppColors.ts';
 import {height} from '../../shared/constants/AppConstants.ts';
 import TransactionCard from './components/TransactionCard.tsx';
+import TransactionSearchBar from './components/TransactionSearchBar.tsx';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const TransactionListPage = () => {
   const {transactions} = useTrxState();
+  const {onSearchTrx} = useTrxMethod();
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        // to unsearch when blur focus page. 
+        onSearchTrx('');
+      };
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.container}>

@@ -9,12 +9,13 @@ import React, {
 } from 'react';
 import {baseURL, defaultTimeout} from '../env/API';
 import {fetchError} from '../helpers/fetchError';
-import {Convert, Transaction, Transactions} from '../model/Transaction';
+import {Transaction, Transactions} from '../model/Transaction';
 
 enum ActionKind {
   Entry = 'entry',
   Fetch = 'fetch',
   Search = 'search',
+  Sort = 'sort',
   Reset = 'reset',
 }
 
@@ -30,18 +31,20 @@ interface TrxAction {
 interface TrxState {
   isFetching: boolean;
   isSearching: boolean;
+  apiTransactions: Transaction[];
   transactions: Transaction[];
 }
 
 interface TrxMethod {
   fetchTransactions: () => Promise<boolean>;
   testFunction: () => void;
-  onSearchTrx: (key: String) => void;
+  onSearchTrx: (key: string) => void;
 }
 
 const initialContextState: TrxState = {
   isFetching: true,
   isSearching: false,
+  apiTransactions: [],
   transactions: [],
 };
 
@@ -62,17 +65,18 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
       case ActionKind.Entry:
         return {
           ...state,
+          apiTransactions: action.payload.transactions,
+          transactions: action.payload.transactions,
+        };
+      case ActionKind.Search:
+        return {
+          ...state,
           transactions: action.payload.transactions,
         };
       case ActionKind.Fetch:
         return {
           ...state,
           isFetching: action.payload.isFetching,
-        };
-      case ActionKind.Search:
-        return {
-          ...state,
-          isSearching: action.payload.isSearching,
         };
 
       case ActionKind.Reset:
@@ -106,10 +110,7 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
           var trxList = Object.keys(sortedTransactions).map(
             key => sortedTransactions[key],
           );
-          // console.log(transactions);
-          // console.log(sortedTransactions);
           console.log(trxList);
-          // console.log(Object.values(transactions)[0]);
           dispatch({
             type: ActionKind.Entry,
             payload: {...state, transactions: trxList},
@@ -125,7 +126,23 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
       testFunction: () => {
         console.log('test function');
       },
-      onSearchTrx: (key: String) => {
+      onSearchTrx: (key: string) => {
+        console.log(`key: ${ key }`);
+        key = key.toLowerCase()
+        let filteredTrx = state.apiTransactions.filter(el => {
+          return (
+            el.beneficiary_name.toLowerCase().includes(key) ||
+            el.sender_bank.toLowerCase().includes(key) ||
+            el.beneficiary_bank.toLowerCase().includes(key) ||
+            el.amount.toString().includes(key)
+          );
+        });
+        dispatch({
+          type: ActionKind.Search,
+          payload: {...state, transactions: filteredTrx},
+        });
+      },
+      onSortTrx: (key: String) => {
         console.log(`key: ${key}`);
       },
     }),

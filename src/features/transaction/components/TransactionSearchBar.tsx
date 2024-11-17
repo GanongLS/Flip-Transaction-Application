@@ -1,34 +1,29 @@
 import {useNavigation} from '@react-navigation/core';
-
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   GestureResponderEvent,
   StyleSheet,
-  TextInput,
   Text,
+  TextInput,
   View,
 } from 'react-native';
-
 import {Icon} from '@rneui/base';
-import {normalize} from '@rneui/themed';
-import {useTrxMethod} from '../../../shared/provider/TransactionProvider';
 import AppColors from '../../../shared/constants/AppColors';
+import {useTrxMethod} from '../../../shared/provider/TransactionProvider';
 
 export interface SearchBarProps {
   onIconPress?: (event: GestureResponderEvent) => void;
 }
 
 const TransactionSearchBar = memo((props: SearchBarProps) => {
-  const {navigate} = useNavigation();
+
   const {onIconPress} = props;
   const {onSearchTrx} = useTrxMethod();
   const [text, setText] = useState('');
-  const onSearch = async () => {
-    if (text.length > 2) {
-      const search = await onSearchTrx(text);
-      // search ? (navigate('Search'), setText('')) : null;
-    }
+  const onSearch = () => {
+    const search = onSearchTrx(text);
   };
+  
   return (
     <View style={{padding: 8, flex: 1}}>
       <View style={{...styles.rowSBContainer, ...styles.rounded}}>
