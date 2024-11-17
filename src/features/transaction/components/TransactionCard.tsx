@@ -6,12 +6,17 @@ import {toTitleCase} from '../../../shared/helpers/StringConverter';
 import {Status, Transaction} from '../../../shared/model/Transaction';
 import {appStyles} from '../../../shared/styles/AppStyles';
 import {nominalFormatter} from '../../../shared/helpers/NominalFormatter';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../navigation/RootStack';
 
 export interface TrxCardProps {
   item: Transaction;
 }
 
 const TransactionCard = (props: TrxCardProps) => {
+  let {navigate} =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   let {item} = props;
   let {status} = item;
   let isSuccess = status == Status.Success ? true : false;
@@ -36,10 +41,9 @@ const TransactionCard = (props: TrxCardProps) => {
       }}>
       <TouchableOpacity
         onPress={() => {
-          console.log('pressed');
-          // onSaveDetails(item.movie);
-          // navigate('Movie Details');
-          // getDetails(item.movie.id);
+          navigate('Transaction Detail', {
+            transaction: item,
+          });
         }}
         style={{
           flex: 1,
@@ -188,6 +192,7 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 8,
+    marginVertical: 4,
     backgroundColor: AppColors.white,
     borderRadius: 8,
     overflow: 'hidden',

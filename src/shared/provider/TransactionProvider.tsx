@@ -147,7 +147,7 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
           var trxList = Object.keys(sortedTransactions).map(
             key => sortedTransactions[key],
           );
-          console.log(trxList);
+
           dispatch({
             type: ActionKind.Entry,
             payload: {...state, transactions: trxList},
@@ -164,7 +164,6 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
         console.log('test function');
       },
       onSearchTrx: (key: string) => {
-        console.log(`key: ${key}`);
         key = key.toLowerCase();
         let filteredTrx = state.apiTransactions.filter(el => {
           return (
@@ -180,7 +179,6 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
         });
       },
       onSortTrx: (key: SortKind) => {
-        console.log(`key: ${key}`);
         let sortedTrx: Transaction[] = [];
         switch (key) {
           case SortKind.NameAsc:
@@ -224,7 +222,6 @@ const TransactionProvider = memo((props: PropsWithChildren<{}>) => {
             sortedTrx = state.apiTransactions;
             break;
         }
-        console.log(`key di provider: ${key}`);
 
         dispatch({
           type: ActionKind.Sort,

@@ -1,14 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import AppColors from '../../shared/constants/AppColors.ts';
+import {height} from '../../shared/constants/AppConstants.ts';
 import {
   useTrxMethod,
   useTrxState,
 } from '../../shared/provider/TransactionProvider';
-import AppColors from '../../shared/constants/AppColors.ts';
-import {height} from '../../shared/constants/AppConstants.ts';
 import TransactionCard from './components/TransactionCard.tsx';
 import TransactionSearchBar from './components/TransactionSearchBar.tsx';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import TransactionSorting from './components/TransactionSortingModal.tsx';
 
 const TransactionListPage = () => {
@@ -16,18 +15,9 @@ const TransactionListPage = () => {
   const {onSearchTrx, initSortArray} = useTrxMethod();
   const [popUpVisible, setPopUpVisible] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        // to unsearch when blur focus page.
-        onSearchTrx('');
-      };
-    }, []),
-  );
-
   useEffect(() => {
     initSortArray();
-    // console.log(`pop up visible: ${popUpVisible}`);
+    onSearchTrx('');
   }, []);
 
   return (

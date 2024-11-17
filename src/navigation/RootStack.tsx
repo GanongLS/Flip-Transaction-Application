@@ -1,17 +1,16 @@
-import {View, Text, SafeAreaView} from 'react-native';
-import React, {memo, useEffect} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {memo, useEffect} from 'react';
 import DashboardPage from '../features/dashboard/DashboardPage';
-import TransactionListPage from '../features/transaction/TransactionListPage';
 import TransactionDetailPage from '../features/transaction/TransactionDetailPage';
+import TransactionListPage from '../features/transaction/TransactionListPage';
 import {useTrxMethod} from '../shared/provider/TransactionProvider';
-import AppColors from '../shared/constants/AppColors';
+import {Transaction} from '../shared/model/Transaction';
 
 export type RootStackParamList = {
   Dashboard: undefined;
   'Transaction List': undefined;
-  'Transaction Detail': undefined;
+  'Transaction Detail': {transaction: Transaction};
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -28,27 +27,23 @@ const RootStackWrapper = memo(() => {
         initialRouteName={'Transaction List'}
         screenOptions={{
           headerStyle: {backgroundColor: 'salmon'},
+          headerShown: false,
         }}>
         <RootStack.Screen
           name="Dashboard"
           component={DashboardPage}
-          options={{title: 'Home'}}
+          options={{
+            title: 'Home',
+            headerShown: true,
+          }}
         />
         <RootStack.Screen
           name="Transaction List"
           component={TransactionListPage}
-          options={{
-            headerStyle: {
-              backgroundColor: AppColors.white,
-            },
-            headerShadowVisible: false,
-            headerShown: false,
-          }}
         />
         <RootStack.Screen
           name="Transaction Detail"
           component={TransactionDetailPage}
-          // options={{headerShown: false}}
         />
       </RootStack.Navigator>
     </NavigationContainer>
